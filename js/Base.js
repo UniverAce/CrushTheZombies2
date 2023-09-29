@@ -1,7 +1,7 @@
 class Base {
-  constructor(x, y, w, h) {
+  constructor(x, y, w, h, color, isStatic) {
     let options = {
-      isStatic: true
+      isStatic: isStatic
     };
 
     this.body = Bodies.rectangle(x, y, w, h, options);
@@ -16,7 +16,7 @@ class Base {
     push();
     translate(pos.x, pos.y);
     rectMode(CENTER);
-    fill("#8d6e63");
+    fill(this.color);
     rect(0, 0, this.w, this.h);
     pop();
   }

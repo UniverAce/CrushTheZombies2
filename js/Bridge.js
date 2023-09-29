@@ -1,7 +1,6 @@
 class Bridge {
   constructor(nlink, pointA) {
     this.nlink = nlink;
-    this.image = loadImage("assets/wood.png");
     const group = Body.nextGroup(true);
     const rects = Composites.stack(100, 100, this.nlink, 1, 5, 5, function(
       x,
@@ -33,6 +32,7 @@ class Bridge {
   }
 
   break() {
+    //Matter.Composite.clear(this.rope,true);
     this.body = null;
   }
 
@@ -45,12 +45,46 @@ class Bridge {
   }
 
   drawVertices(vertices) {
-    push();
-    // translate(vertices[i].x, vertices[i].y);
+    beginShape();
+    fill("#FFF717");
+    noStroke();
 
     for (let i = 0; i < vertices.length; i++) {
-      image(this.image, vertices[i].x, vertices[i].y, 80, 50);
+      vertex(vertices[i].x, vertices[i].y);
     }
-    pop();
+    endShape(CLOSE);
+  }
+
+  showConstraints(constraints) {
+    if (constraints != null) {
+      for (let i = 0; i < constraints.length; i++) {
+        this.drawConstraint(constraints[i]);
+      }
+    }
+  }
+
+  drawConstraint(constraint) {
+    if (constraint != null) {
+      const offsetA = constraint.pointA;
+      let posA = { x: 0, y: 0 };
+      if (constraint.bodyA) {
+        posA = constraint.bodyA.position;
+      }
+      const offsetB = constraint.pointB;
+      let posB = { x: 0, y: 0 };
+      if (constraint.bodyB) {
+        posB = constraint.bodyB.position;
+      }
+      push();
+      strokeWeight(4);
+      stroke(255);
+      line(
+        posA.x + offsetA.x,
+        posA.y + offsetA.y,
+        posB.x + offsetB.x,
+        posB.y + offsetB.y
+      );
+      pop();
+    }
   }
 }
